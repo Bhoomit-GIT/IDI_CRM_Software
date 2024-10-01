@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content%}
+    <h1><p>Update :{{instance.id}} - {{instance.product_name}}</p></h1>
+    <form method="POST">{%csrf_token%}
+        {{form.as_p}}
+        <input type="submit" name="Save" />
+    </form>    
+{% endblock content %}
