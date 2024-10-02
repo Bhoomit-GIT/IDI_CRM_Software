@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Invoice.urls'
+ROOT_URLCONF = 'trydjango.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Invoice.wsgi.application'
+WSGI_APPLICATION = 'trydjango.wsgi.application'
 
 
 # Database
