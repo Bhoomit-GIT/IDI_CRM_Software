@@ -15,7 +15,8 @@ class Connection(models.Model):
     c_country          = models.CharField(max_length=10)
     c_billing_address  = models.TextField()
     c_shipping_address = models.TextField()
-    c_connection_type  = models.CharField(max_length=10) 
+    c_connection_type  = models.CharField(max_length=10)
+    c_GSTIN            = models.CharField(max_length=15)
 
 
 class Connection_Bank_Details(models.Model):
