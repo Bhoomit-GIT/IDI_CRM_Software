@@ -13,4 +13,4 @@ class ProductModelForm(forms.ModelForm):
         product_name = self.cleaned_data.get('product_name')
         if product_name.lower() == 'abc':
             raise forms.ValidationError("This is not a valid name for product")    
-        return product_name
+        return product_name 

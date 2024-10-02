@@ -3,7 +3,7 @@ from .models import Product
 from django.views import View
 from .forms import ProductModelForm
 
-
+ 
 # Create your views here.
 
 class ProductObjectMixin(object):
