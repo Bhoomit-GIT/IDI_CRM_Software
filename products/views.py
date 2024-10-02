@@ -68,7 +68,7 @@ class ProductListView(View):
 
 class MyListView(ProductListView):
     # queryset = Product.objects.filter(id=2)   
-    queryset = Product.objects.all().order_by('-id') # - minus sign to reverse the order
+    queryset = Product.objects.all().order_by('id') # - minus sign to reverse the order
 
 
 class ProductDeleteView(ProductObjectMixin, View):

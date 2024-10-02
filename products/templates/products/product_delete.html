@@ -2,7 +2,7 @@
 {% block content%}
 
     <form method="POST">{%csrf_token%}
-        <h1>do you want to delete product "{{onject.product_name}}"</h1>
+        <h1>do you want to delete product "{{object.product_name}}"</h1>
         <input type="submit" name="Yes" /> <a href='../'>Cancel</a>
     </form>    
 {% endblock content %}
