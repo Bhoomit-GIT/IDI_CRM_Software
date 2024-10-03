@@ -59,8 +59,12 @@ class ProductListView(View):
     template_name = "products/product_list.html"
     queryset = Product.objects.all()
 
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
+
     def get_queryset(self):
-        return self.queryset
+        return self.queryset.filter(is_deleted = False)
     
     def get(self, request, *args, **kwargs):
         context = {'object_list' : self.get_queryset()}
@@ -68,7 +72,7 @@ class ProductListView(View):
 
 class MyListView(ProductListView):
     # queryset = Product.objects.filter(id=2)   
-    queryset = Product.objects.all().order_by('id') # - minus sign to reverse the order
+    queryset = Product.objects.all().filter()  #.order_by('id') # - minus sign to reverse the order
 
 
 class ProductDeleteView(ProductObjectMixin, View):
@@ -87,7 +91,7 @@ class ProductDeleteView(ProductObjectMixin, View):
         if obj is not None:
             obj.delete()
             context['object'] = obj
-            return redirect('/products/')
+            return redirect('/products')
         return render(request, self.template_name, context)
     
 class ProductDetailView(ProductObjectMixin, View):
