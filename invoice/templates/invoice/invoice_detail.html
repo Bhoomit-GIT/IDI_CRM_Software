@@ -4,8 +4,199 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View-Invoice</title>
+    <style>
+        @page {
+            size: A4;
+            /* margin: 20mm; */
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.7;
+            /* padding: 20px; */
+            font-size:smaller;
+            margin-top: 0%;
+            
+        }
+        .content {
+            margin: 0 auto;
+            width: 100%; /* or a fixed width */
+            max-width: 190mm; /* A4 width minus margins */
+            padding: 20mm;
+            border: 1px solid black;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-left: 1%;
+        }
+        table{
+            width: 100%;
+        }
+        th{
+            text-align: left;
+            width: auto;
+        }
+        td ,th{
+            width: auto;
+        }
+        @media print {
+         .print-button {
+          display: none;
+            }
+            .page-break {
+                page-break-before: always; /* Start on a new page */
+            }
+
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="content">
+        <h1 style="text-align: center;">INVOICE</h1>
+        <h6 style="text-align:end; margin: 0;">Original / Duplicate / Triplicate</h6>
+        <span style="float: right;">Invoice No. :<b> IDI2024/25-08</b> </span> <br>
+        <span><b>GSTIN:</b>27ADNPH6726Q1ZR</span>
+        <span style="float: right;"><b>Date:</b> 07-Aug-2024</span><br><br>
+
+        <table>
+            <thead>
+                <th style="width: 50%;">Billing Address</th>
+                <th style="width: 50%;">Shipping Address</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Mr. SURESHBHAI TADHA <br>
+                        DUKE ENTERPRISES <br>
+                        FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
+                        Pune, Maharashtra - 411018 
+                        GSTIN : 27AYEPT9768J1ZF <br>
+                        <b>Phone :</b>8552056117 <br>
+                        <b>Email :</b>shdgfjsgdfhj@gmail.com
+                    </td>
+                    <td>
+                        Mr. SURESHBHAI TADHA <br>
+                        DUKE ENTERPRISES <br>
+                        FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
+                        Pune, Maharashtra - 411018
+                        GSTIN : 27AYEPT9768J1ZF <br>
+                        <b>Phone :</b>8552056117 <br>
+                        <b>Email :</b>shdgfjsgdfhj@gmail.com
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <table>
+            <thead>
+                <th>No.</th>
+                <th>Item & Description</th>
+                <th>HSN/SAC</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Rate($)</th>
+                <th>Taxable($)</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>Amount($)</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Industrial Oven and indistrial furnances</td>
+                    <td>2343</td>
+                    <td>2</td>
+                    <td>No.s.</td>
+                    <td>2,43,234.00</td>
+                    <td>2,43,234.00</td>
+                    <td>18.00%</td>
+                    <td>18.00%</td>
+                    <td>51016.12</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <table>
+            <tbody>
+                <td rowspan="5">
+                    <b>Bank Details:</b><br>Bank Name : ICICI Bank Ltd. <br>
+                    Branch : Ravet - Pune <br>
+                    Account No. : 098505500754 <br>
+                    IFSC : ICIC0003365 <br>
+                    SWIFT Code : ICICINBBCTS
+                </td>
+                <th rowspan="5">Total Invoice Amount in Words : <br>
+                    Rupees Three Lakh Six Thousand Two
+                    Hundred Ten only
+                </th>
+                <tr>
+                    <td>Total Amount before Tax (₹)</td>
+                    <td> 2,59,500.00</td>
+                </tr>
+                <tr>
+                    <td>Add CGST (₹)</td>
+                    <td> 23,355.00</td>
+                </tr>
+                <tr>
+                    <td>Add SGST (₹)</td>
+                    <td> 23,355.00</td>
+                </tr>
+                <tr>
+                    <th>Grand Total (₹)</th>
+                    <th> 3,06,210.00</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <th>Terms & Conditions :</th>
+            </thead>
+            <tbody>
+                <td>
+                    <ul>
+                        <li>Payment to be made by A/c. Payee Cheque/NEFT/RTGS/SWIFT Only.</li>
+                        <li>Interest @24% p.a. will be charged on all unpaid invoices remaining pending after delivery on Delayed payment over and above 30 days from
+                            the bill date.</li>
+                        <li>No Part Payment would be accepted.</li>
+                        <li>No credit will be given for the goods returned without our confirmation.</li>
+                        <li>Goods once sold will not be taken back/exchanged.</li>
+                        <li>Our Liability ceases as soon as the material leaves our premise.</li>
+                        <li>MSME Registered no. UDYAM-MH-26-0213052.</li>
+                        <li>We do not accept responsibility for breakage, damage, theft, or loss in transit once the good are handed over to the transport company.</li>
+                        <li>We will not be responsible for any consequential losses.</li>
+                        <li>In case of dispute only PUNE-India court will have jurisdiction.</li>
+                        <li>FORCE MAJEURE
+                            Our company will not be responsible for any delays or failure in taking material from you in case of problems arising due to unforeseen reason
+                            like bank credit, strike, lockout and fluctuations in the market demand of our products etc.</li>
+                        <li>JURISDICTION
+                            All disputes whatsoever that may arise between the parties out of or in connection with the contract shall always be deemed to have arisen in
+                            Pune and only Court will have jurisdiction to entertain them.</li>
+                    </ul>
+                </td>
+            </tbody>
+        </table>
+
+        <table class="page-break" style="width: 100%; min-height: 100px;">
+            <td>This is a computer-generated invoice. E. & O. E.</td>
+            <td>For, Indo Dynamics Industries
+
+                <b>Authorised Signatory</b>
+            </td>
+        </table>
+
+        <table></table>
+
+        
+
+        <button class="print-button" onclick="window.print();">Print this page</button>
+
+
+
+    </div>
 </body>
 </html>

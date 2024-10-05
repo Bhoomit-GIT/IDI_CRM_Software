@@ -121,10 +121,10 @@ class ProductDeleteView(ProductObjectMixin, View):
         context = {}
         obj = self.get_object()
         if obj is not None:
-            obj.delete()
             def delete(self, *args, **kwargs):
                 self.is_deleted = True
                 self.save()
+            obj.delete()    
             context['object'] = obj
             return redirect('/products')
         return render(request, self.template_name, context)   
