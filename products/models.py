@@ -9,8 +9,7 @@ class Product(models.Model):
     product_description = models.TextField()
     product_price = models.DecimalField(decimal_places=2,max_digits=15)
     is_deleted = models.BooleanField(default=False)
-    product_hsn = models.IntegerField()
-    product_unit = models.CharField(max_length = 5)
+    product_hsn = models.IntegerField(default=32543)
     
 
     def get_absolute_url(self):
