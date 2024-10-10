@@ -7,7 +7,8 @@ class ProductModelForm(forms.ModelForm):
         fields = [
             'product_name',
             'product_description',
-            'product_price'
+            'product_price',
+            'product_hsn'
         ]
     def clean_product_name(self):
         product_name = self.cleaned_data.get('product_name')
