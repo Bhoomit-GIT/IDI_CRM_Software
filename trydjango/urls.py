@@ -26,4 +26,5 @@ urlpatterns = [
     # path('create/<int:product_id>/', initial_product_view,name='initial_product_view'),
     path('products/',include('products.urls')),
     path('connection/',include('connections.urls')),
+    path('invoices/',include('invoice.urls'))
 ]

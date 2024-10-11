@@ -2,7 +2,6 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .models import Product
 from django.views import View
 from .forms import ProductModelForm
-from django.db import transaction
 
  
 # Create your views here.
