@@ -47,9 +47,9 @@
     <div class="content">
         <h1 style="text-align: center;">INVOICE</h1>
         <h4 style="text-align:end; margin: 0;">Original / Duplicate / Triplicate</h4>
-        <span style="float: right;">Invoice No. :<b> IDI2024/25-08</b> </span> <br>
+        <span style="float: right;">Invoice No. :<b> {{ invoice.invoice_no }}</b> </span> <br>
         <span><b>GSTIN:</b>27ADNPH6726Q1ZR</span>
-        <span style="float: right;"><b>Date:</b> 07-Aug-2024</span><br><br>
+        <span style="float: right;"><b>Date:</b> {{ invoice.invoice_date }}</span><br><br>
 
         <table>
             <thead>
@@ -59,16 +59,16 @@
             <tbody>
                 <tr>
                     <td>
-                        Mr. SURESHBHAI TADHA <br>
-                        DUKE ENTERPRISES <br>
+                        {{ invoice.connection.c_name }} <br>
+                        {{ invoice.connection.c_company_name }}<br>
                         FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
                         Pune, Maharashtra - 411018 
                         GSTIN : 27AYEPT9768J1ZF <br>
-                        <b>Phone :</b>8552056117 <br>
-                        <b>Email :</b>shdgfjsgdfhj@gmail.com
+                        <b>Phone :</b>{{ invoice.connection.c_mobile_no }}<br>
+                        <b>Email :</b>{{ invoice.connection.c_email }}
                     </td>
                     <td>
-                        Mr. SURESHBHAI TADHA <br>
+                        {{ invoice.connection.c_name }} <br>
                         DUKE ENTERPRISES <br>
                         FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
                         Pune, Maharashtra - 411018
@@ -96,102 +96,21 @@
                 <th style="width: 11%;">Amount($)</th>
             </thead>
             <tbody>
+                {% for item in invoice_items %}
                 <tr>
                     <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
+                    <td>{{ item.product.product_name }}</td> <!-- Adjust for your Product model -->
+                    <td>{{ item.product.product_hsn }}</td>
+                    <td>{{ item.quantity }}</td>
                     <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
+                    <td>{{ item.rate }}</td>
+                    <td>{{ item.taxable }}</td>
+                    <td>{{ item.cgst }}</td>
+                    <td>{{ item.sgst }}</td>
+                    <!-- <td>{{ item.igst }}</td> -->
+                    <td>{{ item.amount }}</td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Pointing Cum Threading Machine hjsdgvj</td>
-                    <td>74071010</td>
-                    <td>2</td>
-                    <td>No.s.</td>
-                    <td>2,43,234.00</td>
-                    <td>2,43,234.00</td>
-                    <td>18.00%</td>
-                    <td>18.00%</td>
-                    <td>2,51,016.12</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
 

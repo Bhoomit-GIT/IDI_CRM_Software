@@ -1,39 +1,59 @@
 {% extends "base.html" %}
 {% block content%}
-    
-<h1>Create New Invoice</h1>
 
-<form method="POST">
+
+<!-- invoice_create.html -->
+<form method="post">
     {% csrf_token %}
-
-    <!-- Invoice Form -->
-    <h2>Invoice Details</h2>
     {{ invoice_form.as_p }}
 
-    <!-- Invoice Items Formset -->
-    <h2>Products</h2>
-    {{ invoice_item_formset.management_form }}
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for form in invoice_item_formset %}
-                <tr>
-                    <td>{{ form.product }}</td>
-                    <td>{{ form.quantity }}</td>
-                    <td>{{ form.price }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- Submit Button -->
-    <button type="submit">Create Invoice</button>
+    <h3>Invoice Items</h3>
+    <div id="invoice-items">
+        {{ invoice_item_formset.management_form }}
+        {% for form in invoice_item_formset %}
+            <div class="invoice-item" data-form-index="{{ forloop.counter0 }}">
+                {{ form.as_p }}
+                <button type="button" class="remove-item">Remove</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-product">Add Product</button>
+    <button type="submit">Submit Invoice</button>
 </form>
+
+<script>
+document.getElementById('add-product').addEventListener('click', function() {
+    const invoiceItemsDiv = document.getElementById('invoice-items');
+    const totalForms = document.querySelector('input[name="invoiceitem_set-TOTAL_FORMS"]');
+    const currentFormCount = parseInt(totalForms.value);
+
+    // Clone the last form
+    const newForm = invoiceItemsDiv.lastElementChild.cloneNode(true);
+
+    // Clear the fields in the cloned form
+    const inputs = newForm.getElementsByTagName('input');
+    for (let input of inputs) {
+        input.value = '';
+    }
+
+    // Update the management form
+    totalForms.value = currentFormCount + 1;
+
+    // Update the indices in the cloned form
+    newForm.innerHTML = newForm.innerHTML.replace(/-\\d+-/g, `-${currentFormCount}-`);
+    newForm.setAttribute('data-form-index', currentFormCount);
+
+    // Append the new form to the invoice items div
+    invoiceItemsDiv.appendChild(newForm);
+});
+
+document.getElementById('invoice-items').addEventListener('click', function(event) {
+    if (event.target.classList.contains('remove-item')) {
+        event.target.parentElement.remove();
+        const totalForms = document.querySelector('input[name="invoiceitem_set-TOTAL_FORMS"]');
+        totalForms.value = parseInt(totalForms.value) - 1;  // Decrement total forms count
+    }
+});
+</script>
 
 {% endblock content %}
