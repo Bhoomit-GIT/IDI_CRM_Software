@@ -1,4 +1,3 @@
-# forms.py in the invoice app
 from django import forms
 from django.forms import modelformset_factory
 from .models import Invoice, InvoiceItem
@@ -11,6 +10,7 @@ class InvoiceModelForm(forms.ModelForm):
 class InvoiceItemForm(forms.ModelForm):
     class Meta:
         model = InvoiceItem
-        fields = ['product', 'quantity', 'rate', 'taxable', 'cgst', 'sgst', 'igst','amount']
-        
-InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1, can_delete=True)
+        fields = ['product', 'quantity', 'rate', 'taxable', 'cgst', 'sgst', 'igst']
+
+# Create a formset for the InvoiceItem model
+InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=5, can_delete=True)

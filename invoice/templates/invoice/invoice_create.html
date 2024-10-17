@@ -1,58 +1,83 @@
 {% extends "base.html" %}
-{% block content%}
+{% block content %}
 
-
-<!-- invoice_create.html -->
-<form method="post">
+<form method="post" action="{% url 'invoice:invoice-create' %}">
     {% csrf_token %}
+    
     {{ invoice_form.as_p }}
 
-    <h3>Invoice Items</h3>
-    <div id="invoice-items">
-        {{ invoice_item_formset.management_form }}
-        {% for form in invoice_item_formset %}
-            <div class="invoice-item" data-form-index="{{ forloop.counter0 }}">
-                {{ form.as_p }}
-                <button type="button" class="remove-item">Remove</button>
-            </div>
-        {% endfor %}
-    </div>
+    <table id="invoice-items-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Taxable</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>IGST</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ invoice_item_formset.management_form }}
+            {% for form in invoice_item_formset %}
+                <tr class="invoice-item">
+                    <td>{{ form.product }}</td>
+                    <td>{{ form.quantity }}</td>
+                    <td>{{ form.rate }}</td>
+                    <td>{{ form.taxable }}</td>
+                    <td>{{ form.cgst }}</td>
+                    <td>{{ form.sgst }}</td>
+                    <td>{{ form.igst }}</td>
+                    <td>
+                        {% if forloop.first %}
+                            <button type="button" class="remove-item" disabled>Remove</button>
+                        {% else %}
+                            <button type="button" class="remove-item">Remove</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     <button type="button" id="add-product">Add Product</button>
-    <button type="submit">Submit Invoice</button>
+    <button type="submit">Submit</button>
 </form>
 
 <script>
-document.getElementById('add-product').addEventListener('click', function() {
-    const invoiceItemsDiv = document.getElementById('invoice-items');
-    const totalForms = document.querySelector('input[name="invoiceitem_set-TOTAL_FORMS"]');
-    const currentFormCount = parseInt(totalForms.value);
+    document.addEventListener('DOMContentLoaded', function () {
+    let formIndex = {{ invoice_item_formset.total_form_count }};
+    const tableBody = document.querySelector('#invoice-items-table tbody');
+    const addButton = document.getElementById('add-product');
 
-    // Clone the last form
-    const newForm = invoiceItemsDiv.lastElementChild.cloneNode(true);
+    addButton.addEventListener('click', function () {
+        const newRow = document.querySelector('.invoice-item:last-child').cloneNode(true);
+        
+        // Update the index for the new row
+        newRow.innerHTML = newRow.innerHTML.replace(/invoiceitem_set-(\d+)-/g, 'invoiceitem_set-' + formIndex + '-');
 
-    // Clear the fields in the cloned form
-    const inputs = newForm.getElementsByTagName('input');
-    for (let input of inputs) {
-        input.value = '';
-    }
+        // Reset input values in the new row
+        newRow.querySelectorAll('input').forEach(input => {
+            input.value = '';
+        });
 
-    // Update the management form
-    totalForms.value = currentFormCount + 1;
+        // Enable the remove button for the new row
+        const removeButton = newRow.querySelector('.remove-item');
+        removeButton.disabled = false;
 
-    // Update the indices in the cloned form
-    newForm.innerHTML = newForm.innerHTML.replace(/-\\d+-/g, `-${currentFormCount}-`);
-    newForm.setAttribute('data-form-index', currentFormCount);
+        // Append the new row to the table
+        tableBody.appendChild(newRow);
+        formIndex++;
+    });
 
-    // Append the new form to the invoice items div
-    invoiceItemsDiv.appendChild(newForm);
-});
-
-document.getElementById('invoice-items').addEventListener('click', function(event) {
-    if (event.target.classList.contains('remove-item')) {
-        event.target.parentElement.remove();
-        const totalForms = document.querySelector('input[name="invoiceitem_set-TOTAL_FORMS"]');
-        totalForms.value = parseInt(totalForms.value) - 1;  // Decrement total forms count
-    }
+    tableBody.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-item')) {
+            const row = event.target.closest('tr');
+            row.remove();
+        }
+    });
 });
 </script>
 
