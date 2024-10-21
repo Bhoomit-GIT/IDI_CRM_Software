@@ -67,7 +67,14 @@ class InvoiceCreateView(CreateView):
 class InvoiceDetailView(View):
     template_name = 'invoice/invoice_detail.html'
 
+    from django.shortcuts import get_object_or_404
+from django.views import View
+
+class InvoiceDetailView(View):
+    template_name = 'invoice/invoice_detail.html'
+
     def get(self, request, id, *args, **kwargs):
+        print(f"Received id: {id}")  # Debug statement to check the received id
         invoice = get_object_or_404(Invoice, id=id)
         invoice_items = InvoiceItem.objects.filter(invoice=invoice)
 
@@ -76,4 +83,4 @@ class InvoiceDetailView(View):
             'invoice_items': invoice_items,
         }
         return render(request, self.template_name, context)
-    
+        

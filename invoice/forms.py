@@ -13,4 +13,4 @@ class InvoiceItemForm(forms.ModelForm):
         fields = ['product', 'quantity', 'rate', 'taxable', 'cgst', 'sgst', 'igst']
 
 # Create a formset for the InvoiceItem model
-InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=5, can_delete=True)
+InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1, can_delete=True)
