@@ -7,60 +7,64 @@
     
     {{ invoice_form.as_p }}
 
-    <h2>Invoice Items</h2>
-    
-    <!-- Render management form -->
-    {{ invoice_item_formset.management_form }}
+    <table id="invoice-items-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Taxable</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>IGST</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody id="invoice_items">
+            {{ invoice_item_formset.management_form }}
+            {% for form in invoice_item_formset %}
+                <tr class="invoice-item">
+                    <td>{{ form.product }}</td>
+                    <td>{{ form.quantity }}</td>
+                    <td>{{ form.rate }}</td>
+                    <td>{{ form.taxable }}</td>
+                    <td>{{ form.cgst }}</td>
+                    <td>{{ form.sgst }}</td>
+                    <td>{{ form.igst }}</td>
+                    <td>
+                        <button type="button" class="remove-item-btn">Remove</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <div id="invoice-items-container">
-        {% for form in invoice_item_formset %}
-            <div class="invoice-item-form">
-                {{ form.as_p }}
-            </div>
-        {% endfor %}
-    </div>
+    <!-- Add Product button to add a new row -->
+    <button 
+        type="button" 
+        id="add-product-btn"
+        hx-get="{% url 'invoice:add_product' %}?form_count={{ invoice_item_formset.total_form_count }}"
+        hx-target="#invoice_items" 
+        hx-swap="beforeend">
+        Add Product
+    </button>
 
-    <!-- Hidden empty form template -->
-    <div id="empty-form-template" style="display: none;">
-        {{ invoice_item_formset.empty_form.as_p }}
-    </div>
-
-    <button type="button" id="add-product">Add Product</button>
     <button type="submit">Submit</button>
-    <input type="hidden" name="invoiceitem_set-TOTAL_FORMS" id="id_invoiceitem_set-TOTAL_FORMS" value="1">
 </form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const addProductButton = document.getElementById('add-product');
-    const invoiceItemsContainer = document.getElementById('invoice-items-container');
-    const emptyFormTemplate = document.getElementById('empty-form-template').cloneNode(true);
-    const totalForms = document.getElementById('id_invoiceitem_set-TOTAL_FORMS');
-
-    // Ensure totalForms exists
-    if (!totalForms) {
-        console.error('TOTAL_FORMS field not found');
-        return;
-    }
-
-    addProductButton.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        // Clone the empty form template
-        const newForm = emptyFormTemplate.cloneNode(true);
-        newForm.style.display = '';  // Make it visible
-
-        // Update the new form with the correct form index
-        const formIndex = totalForms.value;
-        newForm.innerHTML = newForm.innerHTML.replace(/__prefix__/g, formIndex);
-
-        // Append the new form to the container
-        invoiceItemsContainer.appendChild(newForm);
-
-        // Increment the TOTAL_FORMS count
-        totalForms.value = parseInt(totalForms.value) + 1;
+    document.getElementById('add-product-btn').addEventListener('click', function () {
+        const formCountInput = document.getElementById('id_invoiceitem_set-TOTAL_FORMS');
+        formCountInput.value = parseInt(formCountInput.value) + 1;
     });
-});
+
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('remove-item-btn')) {
+            event.target.closest('tr').remove();
+            const formCountInput = document.getElementById('id_invoiceitem_set-TOTAL_FORMS');
+            formCountInput.value = parseInt(formCountInput.value) - 1;
+        }
+    });
 </script>
 
-{% endblock content %}
+{% endblock %}
