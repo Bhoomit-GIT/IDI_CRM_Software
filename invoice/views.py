@@ -7,7 +7,7 @@ from django.views import View
 from django.db import transaction
 from django.views.generic.edit import CreateView
 
-InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=3)
+InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
 
 class InvoiceCreateView(CreateView):
     template_name = 'invoice/invoice_create.html'

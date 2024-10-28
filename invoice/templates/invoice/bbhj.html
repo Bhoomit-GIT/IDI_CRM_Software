@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
 <form method="post" action="{% url 'invoice:invoice-create' %}">
     {% csrf_token %}
     {{ invoice_form.as_p }}
-    <button id="add-more">Add More</button>
+
     <table id="invoice-items-table">
         <thead>
             <tr>
@@ -20,22 +21,23 @@
         <tbody id="invoice-form-list">
             {{ invoice_item_formset.management_form }}
             {% for form in invoice_item_formset %}
-                <tr class="invoice-item-form">
-                    <td>{{ form.product }}</td>
-                    <td>{{ form.quantity }}</td>
-                    <td>{{ form.rate }}</td>
-                    <td>{{ form.taxable }}</td>
-                    <td>{{ form.cgst }}</td>
-                    <td>{{ form.sgst }}</td>
-                    <td>{{ form.igst }}</td>
-                    <td>.</td>
-                </tr>
+            <tr class="invoice-item-form">
+                <td>{{ form.product }}</td>
+                <td>{{ form.quantity }}</td>
+                <td>{{ form.rate }}</td>
+                <td>{{ form.taxable }}</td>
+                <td>{{ form.cgst }}</td>
+                <td>{{ form.sgst }}</td>
+                <td>{{ form.igst }}</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-    <table>
+    
+    <!-- Empty row template as a <tr> element -->
+    <table style="display: none;">
         <tbody>
-            <tr id='empty-form' class='hidden'>
+            <tr id="empty-form" class="invoice-item-form">
                 <td>{{ invoice_item_formset.empty_form.product }}</td>
                 <td>{{ invoice_item_formset.empty_form.quantity }}</td>
                 <td>{{ invoice_item_formset.empty_form.rate }}</td>
@@ -43,39 +45,44 @@
                 <td>{{ invoice_item_formset.empty_form.cgst }}</td>
                 <td>{{ invoice_item_formset.empty_form.sgst }}</td>
                 <td>{{ invoice_item_formset.empty_form.igst }}</td>
-                <td>{{ invoice_item_formset.empty_form.amount }}</td>
                 <td><button type="button" onclick="removeRow(this)">Remove</button></td>
             </tr>
         </tbody>
     </table>
-    <input type="hidden" id="id_form-TOTAL_FORMS" value="1">
+
+    <button id="add-more">Add More</button>
+    <input type="hidden" id="id_form-TOTAL_FORMS" value="{{ invoice_item_formset.total_form_count }}">
     <button type="submit">Submit</button>
 </form>
+
 <script>
     const addMorebtn = document.getElementById('add-more')
     const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
+
     addMorebtn.addEventListener('click', add_new_form)
-    function add_new_form(event){
-        if(event){
+
+    function add_new_form(event) {
+        if (event) {
             event.preventDefault()
         }
         const currentInvoiceForms = document.getElementsByClassName('invoice-item-form')
-        const currentFormCount = currentInvoiceForms.length //+ 1
-        console.log(currentInvoiceForms.length)
+        const currentFormCount = currentInvoiceForms.length
         const formCopyTarget = document.getElementById('invoice-form-list')
         const copyemptyFormEl = document.getElementById('empty-form').cloneNode(true)
-        copyemptyFormEl.setAttribute('class', 'invoice-item-form')
-        copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+        copyemptyFormEl.removeAttribute('id') // Remove ID from the cloned element
+        copyemptyFormEl.style.display = '' // Make it visible
         const regex = new RegExp('__prefix__', 'g')
         copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex, currentFormCount)
         totalNewForms.setAttribute('value', currentFormCount + 1)
-        formCopyTarget.append(copyemptyFormEl)
+        formCopyTarget.appendChild(copyemptyFormEl) // Use appendChild to add directly as the last row
     }
-    function removeRow(button){
+
+    function removeRow(button) {
         const row = button.parentNode.parentNode
         row.parentNode.removeChild(row)
         const currentFormCount = document.getElementsByClassName('invoice-item-form').length
         totalNewForms.setAttribute('value', currentFormCount)
     }
 </script>
+
 {% endblock content %}

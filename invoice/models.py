@@ -8,13 +8,13 @@ class Invoice(models.Model):
     invoice_date = models.DateField()
     products = models.ManyToManyField(Product, through='InvoiceItem')
     connection = models.ForeignKey(Connection, on_delete=models.CASCADE)
-    total = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    total = models.DecimalField(max_digits=15, decimal_places=2, default=0.00,null=True, blank=True)
 
-    def __str__(self):
-        return f"Invoice {self.invoice_no}"
+    # def __str__(self):
+    #     return f"Invoice {self.invoice_no}"
 
-    def get_absolute_url(self):
-        return reverse('invoice:invoice-detail', kwargs={'id': self.pk})
+    # def get_absolute_url(self):
+    #     return reverse('invoice:invoice-detail', kwargs={'id': self.pk})
 
 
 class InvoiceItem(models.Model):

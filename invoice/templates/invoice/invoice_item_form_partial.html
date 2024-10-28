@@ -1,4 +1,4 @@
-<tr class="invoice-item">
+<tr>
     <td>{{ form.product }}</td>
     <td>{{ form.quantity }}</td>
     <td>{{ form.rate }}</td>
@@ -6,7 +6,8 @@
     <td>{{ form.cgst }}</td>
     <td>{{ form.sgst }}</td>
     <td>{{ form.igst }}</td>
+    <td>{{ form.amount }}</td>
     <td>
-        <button type="button" class="remove-item-btn">Remove</button>
+        <button type="button" class="remove-item" hx-get="#" hx-swap="outerHTML">Remove</button>
     </td>
 </tr>
