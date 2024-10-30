@@ -9,22 +9,63 @@
     <title>Invoice System</title>
     <script src="https://unpkg.com/htmx.org@1.7.0"></script>
     
-    {% if title %}
+    <!-- {% if title %}
         <title>Invoice - {{ title|upper }}</title>
     {% else %}    
         <title>Invoice</title>
-    {% endif %}    
+    {% endif %}     -->
     <!-- {% block style_content %}{% endblock style_content %} -->
-
-
     <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
         .hidden{
             display: none;
+        }
+        .sidenav {
+            height: 100%; 
+            width: 160px; 
+            position: fixed; 
+            z-index: 1; 
+            top: 0; 
+            left: 0;
+            background-color: #ffffff;
+            overflow-x: hidden; 
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            /* font-size: 25px; */
+            color: #184e93;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #ffffff;
+            background-color: #184e93;
+        }
+
+        .sidenav a.logo:hover {
+        background-color: transparent;
+        }
+
+        .main {
+            margin-left: 160px; 
+            padding: 0px 10px;
         }
         
     </style>
 </head> 
 <body>
-    {% block content %}{% endblock %}
+    <div class="sidenav">
+        <a href="{% url 'home' %}" class="logo"><img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px; width: 100px; margin-left: 5px; "></a>
+        <a href="{% url 'invoice:invoice-create' %}">Invoice</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#">Contact</a>
+    </div>
+    <div class="main">{% block content %}{% endblock %}</div>
 </body>
 </html>

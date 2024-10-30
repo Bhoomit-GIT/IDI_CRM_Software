@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path ,include
+from django.views.generic import TemplateView
 # from appInvoice.views import home,about,initial_product_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', home,name='Invoice-home'),
+    path('', TemplateView.as_view(template_name="base.html"), name="home"),
     # path('about/', about,name='Invoice-about'),
     # # path('create/', create_product_view,name='create_product_view'),
     # path('create/<int:product_id>/', initial_product_view,name='initial_product_view'),
