@@ -98,7 +98,7 @@
             <tbody>
                 {% for item in invoice_items %}
                 <tr>
-                    <td>1</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ item.product.product_name }}</td> <!-- Adjust for your Product model -->
                     <td>{{ item.product.product_hsn }}</td>
                     <td>{{ item.quantity }}</td>
@@ -155,23 +155,9 @@
                 <tbody>
                     <td>
                         <ul>
-                            <li>Payment to be made by A/c. Payee Cheque/NEFT/RTGS/SWIFT Only.</li>
-                            <li>Interest @24% p.a. will be charged on all unpaid invoices remaining pending after delivery on Delayed payment over and above 30 days from
-                                the bill date.</li>
-                            <li>No Part Payment would be accepted.</li>
-                            <li>No credit will be given for the goods returned without our confirmation.</li>
-                            <li>Goods once sold will not be taken back/exchanged.</li>
-                            <li>Our Liability ceases as soon as the material leaves our premise.</li>
-                            <li>MSME Registered no. UDYAM-MH-26-0213052.</li>
-                            <li>We do not accept responsibility for breakage, damage, theft, or loss in transit once the good are handed over to the transport company.</li>
-                            <li>We will not be responsible for any consequential losses.</li>
-                            <li>In case of dispute only PUNE-India court will have jurisdiction.</li>
-                            <li>FORCE MAJEURE
-                                Our company will not be responsible for any delays or failure in taking material from you in case of problems arising due to unforeseen reason
-                                like bank credit, strike, lockout and fluctuations in the market demand of our products etc.</li>
-                            <li>JURISDICTION
-                                All disputes whatsoever that may arise between the parties out of or in connection with the contract shall always be deemed to have arisen in
-                                Pune and only Court will have jurisdiction to entertain them.</li>
+                            {% for tc in t_and_c %}
+                            <li>{{tc.invoice_T_C}}</li>
+                            {% endfor %}
                         </ul>
                     </td>
                 </tbody>

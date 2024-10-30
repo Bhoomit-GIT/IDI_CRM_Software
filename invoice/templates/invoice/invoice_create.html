@@ -21,7 +21,10 @@
             {{ invoice_item_formset.management_form }}
             {% for form in invoice_item_formset %}
                 <tr class="invoice-item-form">
-                    <td>{{ form.product }}</td>
+                    <td>
+                        {{ form.product }}
+
+                    </td>
                     <td>{{ form.quantity }}</td>
                     <td>{{ form.rate }}</td>
                     <td>{{ form.taxable }}</td>

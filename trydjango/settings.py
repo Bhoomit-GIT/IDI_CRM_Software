@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'appInvoice',
     'products',
     'connections',
-    'invoice'
+    'invoice',
+    'terms_and_conditions'
 ]
 
 MIDDLEWARE = [
