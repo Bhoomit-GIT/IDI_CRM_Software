@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,7 @@
             size: A4;
             margin: 10mm 10mm 10mm 10mm;
         }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.7;
@@ -19,6 +21,7 @@
         }
         .content {
             margin: 0 auto;
+            margin-top: 1%;
             width: 100%; /* or a fixed width */
             max-width: 210mm; /* A4 width minus margins */
             /* padding: 10mm; */
@@ -37,14 +40,33 @@
             text-align: left;
         }
         @media print {
-            .print-button {
+            .print-hidden {
                 display: none;
                 }
+        }
+        img {
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="content">
+        <table style="border: none; border-collapse: collapse;">
+            <td valign="top" style="min-width: 30%; max-width: 30%; width: 30%; padding-right: 5mm; border: none; "><img src="{% static 'images/logo.png' %}" alt=""></td>
+            <td style="min-width: 40%;border: none; vertical-align: top; ">Registered Office,<br>
+            <b>INDO DYNAMICS INDUSTRIES</b><br>
+            B-509, Ace Aurum, <br>
+            BRT Road, Ravet, <br>
+            Pune - 412101, <br>
+            Maharashtra, India</td>
+            <td style="min-width: 40%;border: none; ">Factory,<br>
+            <b>INDO DYNAMICS INDUSTRIES </b><br>
+            GAT No.85, <br>
+            Dehu Bypass Road, Vitthal Nagar, <br>
+            Tal Haveli, Pimpri Chinchwad, <br>
+            Pune - 412109,<br> Maharashtra, India</td>
+        </table>
+        
         <h1 style="text-align: center;">INVOICE</h1>
         <h4 style="text-align:end; margin: 0;">Original / Duplicate / Triplicate</h4>
         <span style="float: right;">Invoice No. :<b> {{ invoice.invoice_no }}</b> </span> <br>
@@ -62,7 +84,7 @@
                         {{ invoice.connection.c_name }} <br>
                         {{ invoice.connection.c_company_name }}<br>
                         FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
-                        Pune, Maharashtra - 411018 
+                        Pune, Maharashtra - 411018
                         GSTIN : 27AYEPT9768J1ZF <br>
                         <b>Phone :</b>{{ invoice.connection.c_mobile_no }}<br>
                         <b>Email :</b>{{ invoice.connection.c_email }}
@@ -135,7 +157,7 @@
                 </tr>
                 <tr>
                     <td>Add CGST (₹)</td>
-                    <td> 23,355.00</td>
+                    <td> {{invoice.a_cgst}}</td>
                 </tr>
                 <tr>
                     <td>Add SGST (₹)</td>
@@ -165,12 +187,13 @@
         </div>
         <table style=" min-height: 100px;">
             <td>This is a computer-generated invoice. E. & O. E.</td>
-            <td>For, Indo Dynamics Industries
+            <td>For, Indo Dynamics Industries 
+
 
                 <b>Authorised Signatory</b>
             </td>
         </table>
-        <button class="print-button" onclick="window.print();">Print this page</button>
+        <button class="print-hidden" onclick="window.print();">Print this page</button>
     </div>
 </body>
 </html>

@@ -14,7 +14,7 @@
     {% else %}    
         <title>Invoice</title>
     {% endif %}     -->
-    <!-- {% block style_content %}{% endblock style_content %} -->
+    {% block style_content %}{% endblock style_content %}
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -62,9 +62,9 @@
     <div class="sidenav">
         <a href="{% url 'home' %}" class="logo"><img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px; width: 100px; margin-left: 5px; "></a>
         <a href="{% url 'invoice:invoice-create' %}">Invoice</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
+        <a href="{% url 'products:products-create' %}">Products</a>
+        <a href="{% url 'connections:connections-create' %}">Connections</a>
+        <a href="#">Terms and Conditions</a>
     </div>
     <div class="main">{% block content %}{% endblock %}</div>
 </body>

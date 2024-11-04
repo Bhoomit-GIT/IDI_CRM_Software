@@ -7,6 +7,7 @@ from terms_and_conditions.models import Invoice_terms_and_conditions
 from django.views import View
 from django.db import transaction
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
+from .utils import generator_invoice_number
 
 InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
 
@@ -16,9 +17,12 @@ class InvoiceCreateView(CreateView):
     form_class = InvoiceModelForm
     success_url = '/invoice/create/'
 
+
     def get(self, request, *args, **kwargs):
-        invoice_form = self.get_form()
+        invoice_no = generator_invoice_number() 
+        invoice_form = InvoiceModelForm(initial={'invoice_no': invoice_no})
         invoice_item_formset = InvoiceItemFormSet(queryset=InvoiceItem.objects.none())
+
 
         context = {
             'invoice_form': invoice_form,
@@ -35,14 +39,18 @@ class InvoiceCreateView(CreateView):
                 with transaction.atomic():
                     invoice = invoice_form.save()
                     total_amount = 0
+                    ab_cgst = 0
+                    sgst = 0
                     for item_form in invoice_item_formset:
-                        if item_form.cleaned_data and not item_form.cleaned_data.get('DELETE'):
+                        if item_form.cleaned_data:
                             invoice_item = item_form.save(commit=False)
                             invoice_item.invoice = invoice  
-                            invoice_item.amount = invoice_item.quantity * invoice_item.rate
-                            total_amount += invoice_item.amount
+                            # invoice_item.amount = invoice_item.quantity * invoice_item.rate
+                            # total_amount += invoice_item.amount
+                            # ab_cgst += invoice_item.amount  * (invoice_item.cgst/100)
                             invoice_item.save() 
-                    invoice.total = total_amount
+                    # invoice.total = total_amount
+                    # invoice.a_cgst = ab_cgst
                     invoice.save()
 
                     return redirect(self.success_url)
