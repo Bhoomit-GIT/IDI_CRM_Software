@@ -33,9 +33,9 @@ class ProductCreateView(View):                          #By using previously del
                 new_id += 1
             # form = ProductModelForm()         #Will redirect to again create form
             product = form.save(commit=False)
-            product.id = new_id  # Set the new ID explicitly
-            product.save()  # Now save the product
-            return redirect('/products/')           #Redirect to list view after creating
+            product.id = new_id  
+            product.save()  
+            return redirect('/products/')         
         context = {'form': form}        
         return render(request, self.template_name, context)  
  

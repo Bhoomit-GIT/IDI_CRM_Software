@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 {% block content %}
 <form method="post" action="{% url 'invoice:invoice-create' %}">
     {% csrf_token %}
     {{ invoice_form.as_p }}
+
+
     <button id="add-more">Add More</button>
     <table id="invoice-items-table">
         <thead>
@@ -79,5 +82,23 @@
         const currentFormCount = document.getElementsByClassName('invoice-item-form').length
         totalNewForms.setAttribute('value', currentFormCount)
     }
+    // $(document).ready(function() {
+    //     $('#id_connection').select2({
+    //         placeholder: 'Search for a connection...',
+    //         allowClear: true,
+    //         width: '100%',
+    //         ajax: {
+
+    //             dataType: 'json',
+    //             delay: 250,
+    //             processResults: function(data) {
+    //                 return {
+    //                     results: data.results
+    //                 };
+    //             },
+    //             cache: true
+    //         }
+    //     });
+    // });
 </script>
 {% endblock content %}

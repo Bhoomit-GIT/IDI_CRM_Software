@@ -85,7 +85,6 @@ class ConnectionListView(View):
         return render(request, self.template_name, context)
 
 class MyListView(ConnectionListView):
-    # queryset = Product.objects.filter(id=2)   
     queryset = Connection.objects.all().order_by('-id') # - minus sign to reverse the order
 
 class ConnectionDetailView(ConnectionObjectMixin, View):

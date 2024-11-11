@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Connection(models.Model):
@@ -22,3 +23,9 @@ class Connection(models.Model):
     cbd_account_no     = models.IntegerField()
     cbd_ifsc           = models.CharField(max_length=10)
     cbd_swift_code     = models.CharField(max_length=10)
+    
+
+    # def __str__(self):
+    #     return self.c_name  # This ensures that the name will be shown in the dropdown
+    
+    

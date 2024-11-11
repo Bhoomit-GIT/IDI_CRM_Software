@@ -1,20 +1,20 @@
 from django import forms
 from .models import Invoice, InvoiceItem
 
-
 class InvoiceModelForm(forms.ModelForm):
-    invoice_no = forms.CharField(max_length=255, required=False) 
+    invoice_no = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'id': 'invoice_no'}) )
+    invoice_date = forms.DateField(widget=forms.DateInput(attrs={'id': 'invoice_date','type': 'date'}))
     class Meta:
-        model = Invoice
+        model = Invoice 
         fields = ['invoice_no', 'invoice_date', 'connection']
 
-        def __init__(self, *args, **kwargs):
-            invoice_no = kwargs.pop('invoice_no', None)  
-            super().__init__(*args, **kwargs)
-            if invoice_no:
-                self.fields['invoice_no'].initial = invoice_no 
+class Invoice_no_modelform(forms.ModelForm):
+    invoice_no = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'id': 'invoice_no'}) )
+    class Meta:
+        model = Invoice 
+        fields = ['invoice_no']        
 
 class InvoiceItemForm(forms.ModelForm):
-    class Meta:
+    class Meta: 
         model = InvoiceItem
         fields = ['product', 'quantity', 'rate', 'taxable', 'cgst', 'sgst', 'igst']

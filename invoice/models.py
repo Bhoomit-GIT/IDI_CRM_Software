@@ -10,13 +10,6 @@ class Invoice(models.Model):
     total = models.DecimalField(max_digits=15, decimal_places=2, default=0.00,null=True, blank=True)
     a_cgst = models.DecimalField(decimal_places=2,max_digits=10, null=True)
 
-    # def __str__(self):
-    #     return f"Invoice {self.invoice_no}"
-
-    # def get_absolute_url(self):
-    #     return reverse('invoice:invoice-detail', kwargs={'id': self.pk})
-
-
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

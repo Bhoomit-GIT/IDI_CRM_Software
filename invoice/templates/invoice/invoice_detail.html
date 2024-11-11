@@ -22,8 +22,8 @@
         .content {
             margin: 0 auto;
             margin-top: 1%;
-            width: 100%; /* or a fixed width */
-            max-width: 210mm; /* A4 width minus margins */
+            width: 100%; 
+            max-width: 210mm; 
             /* padding: 10mm; */
             /* border: 1px solid black; */
         }
@@ -121,7 +121,7 @@
                 {% for item in invoice_items %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ item.product.product_name }}</td> <!-- Adjust for your Product model -->
+                    <td>{{ item.product.product_name }}</td> 
                     <td>{{ item.product.product_hsn }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>No.s.</td>

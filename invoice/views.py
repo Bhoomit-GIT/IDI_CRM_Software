@@ -1,15 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import modelformset_factory
-from django.http import JsonResponse
 from .forms import InvoiceModelForm, InvoiceItemForm
 from .models import Invoice, InvoiceItem
 from terms_and_conditions.models import Invoice_terms_and_conditions
 from django.views import View
+from connections.models import Connection
+from django.http import JsonResponse
 from django.db import transaction
+from django.urls import reverse
+from datetime import date
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .utils import generator_invoice_number
+from .utils import fiscal_number_generator,get_invoice_number
 
 InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
+
+# def connection_search(request):
+#     query = request.GET.get('q')
+#     connections = Connection.objects.filter(c_name__icontains=query)
+#     results = [{'id': connection.id, 'text': connection.c_name} for connection in connections]
+#     return JsonResponse({'results': results})
 
 class InvoiceCreateView(CreateView):
     template_name = 'invoice/invoice_create.html'
@@ -17,13 +26,18 @@ class InvoiceCreateView(CreateView):
     form_class = InvoiceModelForm
     success_url = '/invoice/create/'
 
-
     def get(self, request, *args, **kwargs):
-        invoice_no = generator_invoice_number() 
-        invoice_form = InvoiceModelForm(initial={'invoice_no': invoice_no})
+        invoice_no = get_invoice_number() 
+        invoice_form = InvoiceModelForm(initial={'invoice_no': invoice_no,'invoice_date':date.today()})
+        invoice_number_url = reverse('invoice:get_invoice_number') + "?invoice_date="
+        invoice_form.fields['invoice_date'].widget.attrs.update({
+            "hx-get": invoice_number_url,
+            "hx-trigger": "change from:body delay:0ms",
+            'hx-target': '#invoice_no',
+            'hx-swap': 'outerHTML'
+        })
         invoice_item_formset = InvoiceItemFormSet(queryset=InvoiceItem.objects.none())
-
-
+        
         context = {
             'invoice_form': invoice_form,
             'invoice_item_formset': invoice_item_formset,
@@ -37,7 +51,9 @@ class InvoiceCreateView(CreateView):
         if invoice_form.is_valid() and invoice_item_formset.is_valid():
             try:
                 with transaction.atomic():
-                    invoice = invoice_form.save()
+                    invoice = invoice_form.save(commit=False)
+                    invoice.invoice_no = fiscal_number_generator(invoice.invoice_no,invoice.invoice_date)
+                    invoice.save()
                     total_amount = 0
                     ab_cgst = 0
                     sgst = 0
@@ -51,7 +67,7 @@ class InvoiceCreateView(CreateView):
                             invoice_item.save() 
                     # invoice.total = total_amount
                     # invoice.a_cgst = ab_cgst
-                    invoice.save()
+                    invoice.save() 
 
                     return redirect(self.success_url)
             except Exception as e:
