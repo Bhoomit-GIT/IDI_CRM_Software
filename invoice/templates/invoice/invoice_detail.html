@@ -1,199 +1,197 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View-Invoice</title>
-    <style>
-        @page {
-            size: A4;
-            margin: 10mm 10mm 10mm 10mm;
-        }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.7;
-            /* padding: 20px; */
-            font-size:smaller;
-            margin-top: 0%;
-            
-        }
-        .content {
-            margin: 0 auto;
-            margin-top: 1%;
-            width: 100%; 
-            max-width: 210mm; 
-            /* padding: 10mm; */
-            /* border: 1px solid black; */
-        }
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding-left: 0.5%;
-            padding-right: 0.5%;
-        }
-        table{
-            width: 100%;
-        }
-        th{
-            text-align: left;
-        }
-        @media print {
-            .print-hidden {
-                display: none;
-                }
-        }
-        img {
-            max-width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="content">
-        <table style="border: none; border-collapse: collapse;">
-            <td valign="top" style="min-width: 30%; max-width: 30%; width: 30%; padding-right: 5mm; border: none; "><img src="{% static 'images/logo.png' %}" alt=""></td>
-            <td style="min-width: 40%;border: none; vertical-align: top; ">Registered Office,<br>
-            <b>INDO DYNAMICS INDUSTRIES</b><br>
-            B-509, Ace Aurum, <br>
-            BRT Road, Ravet, <br>
-            Pune - 412101, <br>
-            Maharashtra, India</td>
-            <td style="min-width: 40%;border: none; ">Factory,<br>
-            <b>INDO DYNAMICS INDUSTRIES </b><br>
-            GAT No.85, <br>
-            Dehu Bypass Road, Vitthal Nagar, <br>
-            Tal Haveli, Pimpri Chinchwad, <br>
-            Pune - 412109,<br> Maharashtra, India</td>
-        </table>
+{% block style_content %}
+<style>
+    @page {
+        size: A4;
+        margin: 10mm 10mm 10mm 10mm;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.7;
+        /* padding: 20px; */
+        font-size:smaller;
+        margin-top: 0%;
         
-        <h1 style="text-align: center;">INVOICE</h1>
-        <h4 style="text-align:end; margin: 0;">Original / Duplicate / Triplicate</h4>
-        <span style="float: right;">Invoice No. :<b> {{ invoice.invoice_no }}</b> </span> <br>
-        <span><b>GSTIN:</b>27ADNPH6726Q1ZR</span>
-        <span style="float: right;"><b>Date:</b> {{ invoice.invoice_date }}</span><br><br>
+    }
+    .content {
+        margin: 0 auto;
+        margin-top: 1%;
+        width: 100%; 
+        max-width: 210mm; 
+        /* padding: 10mm; */
+        /* border: 1px solid black; */
+    }
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding-left: 0.5%;
+        padding-right: 0.5%;
+    }
+    table{
+        width: 100%;
+    }
+    th{
+        text-align: left;
+    }
+    @media print {
+        .print-hidden {
+            display: none;
+            }
+    }
+    img {
+        max-width: 100%;
+    }
+</style>
+{% endblock style_content %}
 
-        <table>
-            <thead>
-                <th style="width: 50%;">Billing Address</th>
-                <th style="width: 50%;">Shipping Address</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        {{ invoice.connection.c_name }} <br>
-                        {{ invoice.connection.c_company_name }}<br>
-                        FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
-                        Pune, Maharashtra - 411018
-                        GSTIN : 27AYEPT9768J1ZF <br>
-                        <b>Phone :</b>{{ invoice.connection.c_mobile_no }}<br>
-                        <b>Email :</b>{{ invoice.connection.c_email }}
-                    </td>
-                    <td>
-                        {{ invoice.connection.c_name }} <br>
-                        DUKE ENTERPRISES <br>
-                        FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
-                        Pune, Maharashtra - 411018
-                        GSTIN : 27AYEPT9768J1ZF <br>
-                        <b>Phone :</b>8552056117 <br>
-                        <b>Email :</b>shdgfjsgdfhj@gmail.com
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+{% block content %}
+<div class="content">
+    <table style="border: none; border-collapse: collapse;">
+        <td valign="top" style="min-width: 30%; max-width: 30%; width: 30%; padding-right: 5mm; border: none; "><img src="{% static 'images/logo.png' %}" alt=""></td>
+        <td style="min-width: 40%;border: none; vertical-align: top; ">Registered Office,<br>
+        <b>INDO DYNAMICS INDUSTRIES</b><br>
+        B-509, Ace Aurum, <br>
+        BRT Road, Ravet, <br>
+        Pune - 412101, <br>
+        Maharashtra, India</td>
+        <td style="min-width: 40%;border: none; ">Factory,<br>
+        <b>INDO DYNAMICS INDUSTRIES </b><br>
+        GAT No.85, <br>
+        Dehu Bypass Road, Vitthal Nagar, <br>
+        Tal Haveli, Pimpri Chinchwad, <br>
+        Pune - 412109,<br> Maharashtra, India</td>
+    </table>
+    
+    <h1 style="text-align: center;">INVOICE</h1>
+    <h4 style="text-align:end; margin: 0;">Original / Duplicate / Triplicate</h4>
+    <span style="float: right;">Invoice No. :<b> {{ invoice.invoice_no }}</b> </span> <br>
+    <span><b>GSTIN:</b>27ADNPH6726Q1ZR</span>
+    <span style="float: right;"><b>Date:</b> {{ invoice.invoice_date }}</span><br><br>
 
-        <br>
-
-        <table>
-            <thead>
-                <th style="width: 4%;">No.</th>
-                <th style="width: 26%;">Item & Description</th>
-                <th style="width: 10%;">HSN/SAC</th>
-                <th style="width: 5%;">Qty</th>
-                <th style="width: 6%;">Unit</th>
-                <th style="width: 11%;">Rate($)</th>
-                <th style="width: 11%;">Taxable($)</th>
-                <th style="width: 8%;">CGST</th>
-                <th style="width: 8%;">SGST</th>
-                <th style="width: 11%;">Amount($)</th>
-            </thead>
-            <tbody>
-                {% for item in invoice_items %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ item.product.product_name }}</td> 
-                    <td>{{ item.product.product_hsn }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>No.s.</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.taxable }}</td>
-                    <td>{{ item.cgst }}</td>
-                    <td>{{ item.sgst }}</td>
-                    <!-- <td>{{ item.igst }}</td> -->
-                    <td>{{ item.amount }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <br>
-
-        <table class="no-break">
-            <tbody>
-                <td rowspan="5" style="width: 30%;">
-                    <b>Bank Details:</b><br>Bank Name : ICICI Bank Ltd. <br>
-                    Branch : Ravet - Pune <br>
-                    Account No. : 098505500754 <br>
-                    IFSC : ICIC0003365 <br>
-                    SWIFT Code : ICICINBBCTS
+    <table>
+        <thead>
+            <th style="width: 50%;">Billing Address</th>
+            <th style="width: 50%;">Shipping Address</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{ invoice.connection.c_name }} <br>
+                    {{ invoice.connection.c_company_name }}<br>
+                    FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
+                    Pune, Maharashtra - 411018
+                    GSTIN : 27AYEPT9768J1ZF <br>
+                    <b>Phone :</b>{{ invoice.connection.c_mobile_no }}<br>
+                    <b>Email :</b>{{ invoice.connection.c_email }}
                 </td>
-                <th rowspan="5" style="width: 33%;">Total Invoice Amount in Words : <br>
-                    Rupees Three Lakh Six Thousand Two
-                    Hundred Ten only
-                </th>
-                <tr style="width: 33%; text-align: right;">
-                    <td style="width: 25%;">Total Amount before Tax (₹)</td>
-                    <td style="width: 11%;"> 2,59,500.00</td>
-                </tr>
-                <tr>
-                    <td>Add CGST (₹)</td>
-                    <td> {{invoice.a_cgst}}</td>
-                </tr>
-                <tr>
-                    <td>Add SGST (₹)</td>
-                    <td> 23,355.00</td>
-                </tr>
-                <tr>
-                    <th>Grand Total (₹)</th>
-                    <th> 3,06,210.00</th>
-                </tr>
-            </tbody>
-        </table><br>
-        <div class="before">
-            <table>
-                <thead>
-                    <th>Terms & Conditions :</th>
-                </thead>
-                <tbody>
-                    <td>
-                        <ul>
-                            {% for tc in t_and_c %}
-                            <li>{{tc.invoice_T_C}}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tbody>
-            </table>
-        </div>
-        <table style=" min-height: 100px;">
-            <td>This is a computer-generated invoice. E. & O. E.</td>
-            <td>For, Indo Dynamics Industries 
+                <td>
+                    {{ invoice.connection.c_name }} <br>
+                    DUKE ENTERPRISES <br>
+                    FLAT NO 3 BUILDING NO E1.,, MASULKAR COLONY , PIMPRI
+                    Pune, Maharashtra - 411018
+                    GSTIN : 27AYEPT9768J1ZF <br>
+                    <b>Phone :</b>8552056117 <br>
+                    <b>Email :</b>shdgfjsgdfhj@gmail.com
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
+    <br>
 
-                <b>Authorised Signatory</b>
+    <table>
+        <thead>
+            <th style="width: 4%;">No.</th>
+            <th style="width: 26%;">Item & Description</th>
+            <th style="width: 10%;">HSN/SAC</th>
+            <th style="width: 5%;">Qty</th>
+            <th style="width: 6%;">Unit</th>
+            <th style="width: 11%;">Rate($)</th>
+            <th style="width: 11%;">Taxable($)</th>
+            <th style="width: 8%;">CGST</th>
+            <th style="width: 8%;">SGST</th>
+            <th style="width: 11%;">Amount($)</th>
+        </thead>
+        <tbody>
+            {% for item in invoice_items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.product_name }}</td> 
+                <td>{{ item.product.product_hsn }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>No.s.</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.taxable }}</td>
+                <td>{{ item.cgst }}</td>
+                <td>{{ item.sgst }}</td>
+                <!-- <td>{{ item.igst }}</td> -->
+                <td>{{ item.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+
+    <table class="no-break">
+        <tbody>
+            <td rowspan="5" style="width: 30%;">
+                <b>Bank Details:</b><br>Bank Name : ICICI Bank Ltd. <br>
+                Branch : Ravet - Pune <br>
+                Account No. : 098505500754 <br>
+                IFSC : ICIC0003365 <br>
+                SWIFT Code : ICICINBBCTS
             </td>
+            <th rowspan="5" style="width: 33%;">Total Invoice Amount in Words : <br>
+                Rupees Three Lakh Six Thousand Two
+                Hundred Ten only
+            </th>
+            <tr style="width: 33%; text-align: right;">
+                <td style="width: 25%;">Total Amount before Tax (₹)</td>
+                <td style="width: 11%;"> 2,59,500.00</td>
+            </tr>
+            <tr>
+                <td>Add CGST (₹)</td>
+                <td> {{invoice.a_cgst}}</td>
+            </tr>
+            <tr>
+                <td>Add SGST (₹)</td>
+                <td> 23,355.00</td>
+            </tr>
+            <tr>
+                <th>Grand Total (₹)</th>
+                <th> 3,06,210.00</th>
+            </tr>
+        </tbody>
+    </table><br>
+    <div class="before">
+        <table>
+            <thead>
+                <th>Terms & Conditions :</th>
+            </thead>
+            <tbody>
+                <td>
+                    <ul>
+                        {% for tc in t_and_c %}
+                        <li>{{tc.invoice_T_C}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tbody>
         </table>
-        <button class="print-hidden" onclick="window.print();">Print this page</button>
     </div>
-</body>
-</html>
+    <table style=" min-height: 100px;">
+        <td>This is a computer-generated invoice. E. & O. E.</td>
+        <td>For, Indo Dynamics Industries 
+
+
+            <b>Authorised Signatory</b>
+        </td>
+    </table>
+    <button class="print-hidden" onclick="window.print();">Print this page</button>
+</div>
+{% endblock %}
+
