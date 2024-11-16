@@ -4,7 +4,7 @@
 <form method="post" action="{% url 'invoice:invoice-create' %}">
     {% csrf_token %}
     {{ invoice_form.as_p }}
-
+    {{connection_form.as_p}}
 
     <button id="add-more">Add More</button>
     <table id="invoice-items-table">

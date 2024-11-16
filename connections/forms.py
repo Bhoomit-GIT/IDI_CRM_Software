@@ -2,6 +2,7 @@ from django import forms
 from .models import Connection
 
 class ConnectionModelForm(forms.ModelForm):
+    c_name = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'id': 'c_name'}) )
     class Meta:
         model = Connection
         fields = [
@@ -25,3 +26,11 @@ class ConnectionModelForm(forms.ModelForm):
             'cbd_ifsc',
             'cbd_swift_code'
         ]       
+
+class ConnectionnameModelForm(forms.ModelForm):
+    c_name = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'id': 'c_name'}) )
+    class Meta:
+        model = Connection
+        fields = [
+            'c_name',
+        ]             

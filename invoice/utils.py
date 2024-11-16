@@ -2,7 +2,13 @@ from datetime import date
 from django.http import HttpResponse
 from datetime import datetime
 from .models import Invoice
+from connections.forms import ConnectionnameModelForm
 from .forms import Invoice_no_modelform
+
+
+def change(request):
+    connection_form = ConnectionnameModelForm(initial={'c_name': 'bhumit'})
+    return HttpResponse(connection_form)
 
 def fiscal_number_generator(invoice_no,selected_date):
     year = selected_date.year

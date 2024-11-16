@@ -5,12 +5,13 @@ from .models import Invoice, InvoiceItem
 from terms_and_conditions.models import Invoice_terms_and_conditions
 from django.views import View
 from connections.models import Connection
+from connections.forms import ConnectionModelForm
 from django.http import JsonResponse
 from django.db import transaction
 from django.urls import reverse
 from datetime import date
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .utils import fiscal_number_generator,get_invoice_number
+from .utils import fiscal_number_generator,get_invoice_number,change
 
 InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
 
@@ -36,11 +37,25 @@ class InvoiceCreateView(CreateView):
             'hx-target': '#invoice_no',
             'hx-swap': 'outerHTML'
         })
+        something = reverse('invoice:change')
+
+        invoice_form.fields['connection'].widget.attrs.update({
+            "hx-get": something,
+            "hx-trigger": "change from:body delay:0ms",
+            'hx-target': '#c_name',
+            'hx-swap': 'outerHTML',
+            'id': 'connection_object'
+        })
+
+
+
         invoice_item_formset = InvoiceItemFormSet(queryset=InvoiceItem.objects.none())
+        connection_form = ConnectionModelForm()
         
         context = {
             'invoice_form': invoice_form,
             'invoice_item_formset': invoice_item_formset,
+            'connection_form': connection_form
         }
         return render(request, self.template_name, context)
 
