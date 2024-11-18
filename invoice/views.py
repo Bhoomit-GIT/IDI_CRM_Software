@@ -5,7 +5,7 @@ from .models import Invoice, InvoiceItem
 from terms_and_conditions.models import Invoice_terms_and_conditions
 from django.views import View
 from connections.models import Connection
-from connections.forms import ConnectionModelForm
+from connections.forms import ConnectionModelForm,ConnectionInvoiceModelForm
 from django.http import JsonResponse
 from django.db import transaction
 from django.urls import reverse
@@ -28,21 +28,20 @@ class InvoiceCreateView(CreateView):
     success_url = '/invoice/create/'
 
     def get(self, request, *args, **kwargs):
-        invoice_no = get_invoice_number() 
-        invoice_form = InvoiceModelForm(initial={'invoice_no': invoice_no,'invoice_date':date.today()})
-        invoice_number_url = reverse('invoice:get_invoice_number') + "?invoice_date="
+
+        invoice_form = InvoiceModelForm(initial={'invoice_no': get_invoice_number(),'invoice_date':date.today()})
+
         invoice_form.fields['invoice_date'].widget.attrs.update({
-            "hx-get": invoice_number_url,
-            "hx-trigger": "change from:body delay:0ms",
+            "hx-get": reverse('invoice:get_invoice_number') + "?invoice_date=",
+            "hx-trigger": "change delay:0ms",
             'hx-target': '#invoice_no',
             'hx-swap': 'outerHTML'
         })
-        something = reverse('invoice:change')
 
         invoice_form.fields['connection'].widget.attrs.update({
-            "hx-get": something,
-            "hx-trigger": "change from:body delay:0ms",
-            'hx-target': '#c_name',
+            "hx-get": reverse('invoice:change'),
+            "hx-trigger": "change delay:0ms",
+            'hx-target': '#c_name,#c_company_name,#c_GSTIN,#c_mobile_no,#c_email,#c_city,#c_state,#c_country,#c_billing_address,#c_shipping_address',
             'hx-swap': 'outerHTML',
             'id': 'connection_object'
         })
@@ -50,7 +49,7 @@ class InvoiceCreateView(CreateView):
 
 
         invoice_item_formset = InvoiceItemFormSet(queryset=InvoiceItem.objects.none())
-        connection_form = ConnectionModelForm()
+        connection_form = ConnectionInvoiceModelForm()
         
         context = {
             'invoice_form': invoice_form,
