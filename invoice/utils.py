@@ -2,34 +2,24 @@ from datetime import date
 from django.http import HttpResponse
 from datetime import datetime
 from .models import Invoice
+from django.shortcuts import render, redirect, get_object_or_404
+from connections.models import Connection
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from connections.forms import ConnectionInvoiceModelForm,ConnectionModelForm
 from .forms import Invoice_no_modelform
 
+def change_connection(request):
+    connection_id = request.GET.get('connection')  
+    if not connection_id:
+        return JsonResponse({'error': 'Connection ID not provided'}, status=400)
+    try:
+        connection_instance = Connection.objects.get(id=connection_id)
+        connection_form = ConnectionInvoiceModelForm(instance=connection_instance)
+        return HttpResponse(connection_form.as_p())  
+    except Connection.DoesNotExist:
+        return JsonResponse({'error': 'Connection not found'}, status=404)
 
-
-def change(request):
-    # Simulate fetching data for the selected connection
-    initial_data = {
-        'c_name': 'Bhumit',
-        'c_company_name': 'ApnaCompany',
-        'c_GSTIN': '7459375484w98',
-        'c_mobile_no': '9894584395',
-        'c_email': 'bhoomitrachchawar1457@gmail.com',
-        'c_city': 'Chandrapur',
-        'c_state': 'Maharashtra',
-        'c_country': 'India',
-        'c_billing_address': 'Nagpur',
-        'c_shipping_address': 'Chandrapur',
-    }
-    
-    # Render the form with initial data
-    connection_form = ConnectionInvoiceModelForm(initial={'c_name': 'Bhumit','c_company_name': 'ApnaCompany'})
-    # form_html = render_to_string('partials/connection_form.html', {'connection_form': connection_form})
-
-    # Return the rendered HTML for the form 
-    return HttpResponse(connection_form) 
 
 def fiscal_number_generator(invoice_no,selected_date):
     year = selected_date.year

@@ -4,8 +4,9 @@
 <form method="post" action="{% url 'invoice:invoice-create' %}">
     {% csrf_token %}
     {{ invoice_form.as_p }}
-
+    <div id="connection-fields">
         {{ connection_form.as_p }}
+    </div>
 
 
     <button id="add-more">Add More</button>
@@ -35,7 +36,7 @@
                     <td>{{ form.cgst }}</td>
                     <td>{{ form.sgst }}</td>
                     <td>{{ form.igst }}</td>
-                    <td>.</td>
+                    <td>  </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -84,23 +85,16 @@
         const currentFormCount = document.getElementsByClassName('invoice-item-form').length
         totalNewForms.setAttribute('value', currentFormCount)
     }
-    // $(document).ready(function() {
-    //     $('#id_connection').select2({
-    //         placeholder: 'Search for a connection...',
-    //         allowClear: true,
-    //         width: '100%',
-    //         ajax: {
-
-    //             dataType: 'json',
-    //             delay: 250,
-    //             processResults: function(data) {
-    //                 return {
-    //                     results: data.results
-    //                 };
-    //             },
-    //             cache: true
-    //         }
+    // document.addEventListener('htmx:afterRequest', function (event) {
+    // const changeInvoiceURL = "{% url 'invoice:change' %}";
+    // fetch(changeInvoiceURL)  // Adjust the URL as needed
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         document.getElementById('c_name').value = data.c_name;
+    //         document.getElementById('c_company_name').value = data.c_company_name;
+    //         // document.getElementById('id_age').value = data.age;
     //     });
     // });
+
 </script>
 {% endblock content %}

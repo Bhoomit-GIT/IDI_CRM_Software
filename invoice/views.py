@@ -11,15 +11,9 @@ from django.db import transaction
 from django.urls import reverse
 from datetime import date
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .utils import fiscal_number_generator,get_invoice_number,change
+from .utils import fiscal_number_generator,get_invoice_number
 
 InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
-
-# def connection_search(request):
-#     query = request.GET.get('q')
-#     connections = Connection.objects.filter(c_name__icontains=query)
-#     results = [{'id': connection.id, 'text': connection.c_name} for connection in connections]
-#     return JsonResponse({'results': results})
 
 class InvoiceCreateView(CreateView):
     template_name = 'invoice/invoice_create.html'
@@ -41,10 +35,10 @@ class InvoiceCreateView(CreateView):
         invoice_form.fields['connection'].widget.attrs.update({
             "hx-get": reverse('invoice:change'),
             "hx-trigger": "change delay:0ms",
-            'hx-target': '#c_name,#c_company_name,#c_GSTIN,#c_mobile_no,#c_email,#c_city,#c_state,#c_country,#c_billing_address,#c_shipping_address',
-            'hx-swap': 'outerHTML',
-            'id': 'connection_object'
+            "hx-target": "#connection-fields",
+            "hx-swap": "innerHTML"
         })
+        
 
 
 
