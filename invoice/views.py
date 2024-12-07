@@ -36,19 +36,31 @@ class InvoiceCreateView(CreateView):
             "hx-get": reverse('invoice:change'),
             "hx-trigger": "change delay:0ms",
             "hx-target": "#connection-fields",
-            "hx-swap": "innerHTML"
+            "hx-swap": "innerHTML",
+            "id": "connection_object"
         })
         
-
-
-
+        # invoice_form.fields[].widget.attrs.update({
+        #     "hx-get": reverse('invoice:gst_type_view'),
+        #     "hx-trigger": "change delay:0ms",
+        #     "hx-target": "#gst-type-display",
+        #     "hx-swap": "innerHTML",
+        #     "id": "connection_object"
+        # })        
+        
         invoice_item_formset = InvoiceItemFormSet(queryset=InvoiceItem.objects.none())
         connection_form = ConnectionInvoiceModelForm()
+
+        # invoice_form.fields['connection'].widget.attrs.update({
+        #     "hx-get": reverse('invoice:get_gst_type'),
+        #     "hx-trigger": "change delay:0ms",
+        # })
         
         context = {
             'invoice_form': invoice_form,
             'invoice_item_formset': invoice_item_formset,
-            'connection_form': connection_form
+            'connection_form': connection_form,
+            'gst_type': 'cgst_sgst',
         }
         return render(request, self.template_name, context)
 

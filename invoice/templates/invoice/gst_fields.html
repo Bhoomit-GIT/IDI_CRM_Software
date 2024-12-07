@@ -1,0 +1,33 @@
+<thead>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>Taxable</th>
+        <th>Actions</th>
+        {% if gst_type == "cgst_sgst" %}
+            <th>CGST</th>
+            <th>SGST</th>
+        {% else %}
+            <th>IGST</th>
+        {% endif %}
+    </tr>
+</thead>
+<tbody id="invoice-form-list">
+    {{ invoice_item_formset.management_form }}
+    {% for form in invoice_item_formset %}
+        <tr class="invoice-item-form">
+            <td>{{ form.product }}</td>
+            <td>{{ form.quantity }}</td>
+            <td>{{ form.rate }}</td>
+            <td>{{ form.taxable }}</td>
+            {% if gst_type == "cgst_sgst" %}
+                <td>{{ form.cgst }}</td>
+                <td>{{ form.sgst }}</td>
+            {% else %}
+                <td>{{ form.igst }}</td>
+            {% endif %}
+            <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+        </tr>
+    {% endfor %}
+</tbody>

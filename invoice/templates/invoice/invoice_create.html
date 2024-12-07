@@ -5,10 +5,11 @@
     {% csrf_token %}
     {{ invoice_form.as_p }}
     <div id="connection-fields">
+        <!-- Connection form fields will dynamically update here -->
         {{ connection_form.as_p }}
     </div>
-
-
+    
+    <p id="gst-type-display">GST Type: </p>
     <button id="add-more">Add More</button>
     <table id="invoice-items-table">
         <thead>
@@ -17,9 +18,12 @@
                 <th>Quantity</th>
                 <th>Rate</th>
                 <th>Taxable</th>
-                <th>CGST</th>
-                <th>SGST</th>
-                <th>IGST</th>
+                {% if gst_type == "cgst_sgst" %}
+                    <th>CGST</th>
+                    <th>SGST</th>
+                {% else %}
+                    <th>IGST</th>
+                {% endif %}
                 <th>Actions</th>
             </tr>
         </thead>
@@ -33,9 +37,12 @@
                     <td>{{ form.quantity }}</td>
                     <td>{{ form.rate }}</td>
                     <td>{{ form.taxable }}</td>
+                    {% if gst_type == "cgst_sgst" %}
                     <td>{{ form.cgst }}</td>
                     <td>{{ form.sgst }}</td>
+                {% else %}
                     <td>{{ form.igst }}</td>
+                {% endif %} 
                     <td>  </td>
                 </tr>
             {% endfor %}
@@ -48,9 +55,12 @@
                 <td>{{ invoice_item_formset.empty_form.quantity }}</td>
                 <td>{{ invoice_item_formset.empty_form.rate }}</td>
                 <td>{{ invoice_item_formset.empty_form.taxable }}</td>
+                {% if gst_type == "cgst_sgst" %}
                 <td>{{ invoice_item_formset.empty_form.cgst }}</td>
                 <td>{{ invoice_item_formset.empty_form.sgst }}</td>
+                {% else %}
                 <td>{{ invoice_item_formset.empty_form.igst }}</td>
+                {% endif %} 
                 <td>{{ invoice_item_formset.empty_form.amount }}</td>
                 <td><button type="button" onclick="removeRow(this)">Remove</button></td>
             </tr>
@@ -85,16 +95,31 @@
         const currentFormCount = document.getElementsByClassName('invoice-item-form').length
         totalNewForms.setAttribute('value', currentFormCount)
     }
-    // document.addEventListener('htmx:afterRequest', function (event) {
-    // const changeInvoiceURL = "{% url 'invoice:change' %}";
-    // fetch(changeInvoiceURL)  // Adjust the URL as needed
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         document.getElementById('c_name').value = data.c_name;
-    //         document.getElementById('c_company_name').value = data.c_company_name;
-    //         // document.getElementById('id_age').value = data.age;
-    //     });
-    // });
+    document.addEventListener('DOMContentLoaded', () => {
+    const gstTypeURL = "{% url 'invoice:get_gst_type' %}"; // Ensure this URL is correct
+    const connectionField = document.querySelector('#connection_object');
+
+    connectionField.addEventListener('change', () => {
+        const connectionValue = connectionField.value;
+
+        fetch(`${gstTypeURL}?connection=${connectionValue}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const gstFieldsContainer = document.querySelector('#invoice-items-table');
+                gstFieldsContainer.innerHTML = data.html; // Replace the content with new HTML
+            })
+            .catch(error => {
+                console.error('Error fetching GST fields:', error);
+            });
+    });
+});
 
 </script>
 {% endblock content %}
+
+

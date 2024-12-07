@@ -1,13 +1,30 @@
 from datetime import date
 from django.http import HttpResponse
 from datetime import datetime
+from django.forms import modelformset_factory
+from .forms import InvoiceModelForm, InvoiceItemForm
 from .models import Invoice
+from .models import Invoice, InvoiceItem
 from django.shortcuts import render, redirect, get_object_or_404
 from connections.models import Connection
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django import forms
+
 from connections.forms import ConnectionInvoiceModelForm,ConnectionModelForm
 from .forms import Invoice_no_modelform
+
+InvoiceItemFormSet = modelformset_factory(InvoiceItem, form=InvoiceItemForm, extra=1)
+def get_gst_type_view(request):
+    gstin = request.GET.get('c_GSTIN', '')
+    # Logic to determine CGST/SGST or IGST based on GSTIN.
+    gst_type = "cgst_sgst" if gstin.startswith('24') else "igst"  # Replace with actual logic.
+    context = {
+        'gst_type': gst_type,
+        'gst_fields.html':'invoice/gst_fields.html'
+    }
+    return HttpResponse(context)
+
 
 def change_connection(request):
     connection_id = request.GET.get('connection')  
@@ -16,7 +33,17 @@ def change_connection(request):
     try:
         connection_instance = Connection.objects.get(id=connection_id)
         connection_form = ConnectionInvoiceModelForm(instance=connection_instance)
-        return HttpResponse(connection_form.as_p())  
+        gstin = connection_instance.c_GSTIN
+        gst_type = "cgst_sgst" if gstin.startswith('24') else "igst" 
+
+        # Render the appropriate fields based on GST type
+        context = {
+            'connection_form': connection_form,
+            'gst_type': gst_type,
+            'invoice_item_formset': InvoiceItemFormSet(queryset=InvoiceItem.objects.none())  # Pass an empty formset
+        }
+        html = render_to_string('gst_fields.html', context)  # Render the fields to HTML
+        return HttpResponse(connection_form.as_p())  # Return the rendered HTML
     except Connection.DoesNotExist:
         return JsonResponse({'error': 'Connection not found'}, status=404)
 
